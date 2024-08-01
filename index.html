@@ -20,12 +20,10 @@
             text-align: center;
         }
         h1 {
-            font-size: 4rem;
+            font-size: 3rem;
             color: #ffffff;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            animation: pulse 2s infinite;
-            text-wrap: nowrap;
-
+            margin-bottom: 20px;
         }
         .emoticons {
             font-size: 3rem;
@@ -35,11 +33,6 @@
             display: inline-block;
             margin: 0 10px;
             animation: bounce 1s infinite alternate;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
         }
         @keyframes bounce {
             from { transform: translateY(0); }
@@ -56,21 +49,58 @@
             0% { transform: translateY(-100vh) rotate(0deg); }
             100% { transform: translateY(100vh) rotate(720deg); }
         }
+        #countdown {
+            font-size: 2rem;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Congratulations Dr. Tanya!</h1>
-        <div class="emoticons">
-            <span class="emoticon">🎓</span>
-            <span class="emoticon">🎉</span>
-            <span class="emoticon">🥳</span>
-            <span class="emoticon">👏</span>
-            <span class="emoticon">🌟</span>
+        <div id="countdown">
+            <span id="timer"></span>
+        </div>
+        <div id="congratsMessage" class="hidden">
+            <h1>Congratulations Dr. Tanya!</h1>
+            <div class="emoticons">
+                <span class="emoticon">🎓</span>
+                <span class="emoticon">🎉</span>
+                <span class="emoticon">🥳</span>
+                <span class="emoticon">👏</span>
+                <span class="emoticon">🌟</span>
+            </div>
         </div>
     </div>
 
     <script>
+        // Set the reveal time (August 1, 2024, 3:50 PM IST)
+        const revealTime = new Date('2024-08-01T15:50:00+05:30').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = revealTime - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('timer').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                document.getElementById('countdown').classList.add('hidden');
+                document.getElementById('congratsMessage').classList.remove('hidden');
+                startConfetti();
+            }
+        }
+
+        const countdownTimer = setInterval(updateCountdown, 1000);
+
         function createConfetti() {
             const confetti = document.createElement('div');
             confetti.classList.add('confetti');
@@ -84,7 +114,11 @@
             }, 5000);
         }
 
-        setInterval(createConfetti, 100);
+        function startConfetti() {
+            setInterval(createConfetti, 100);
+        }
+
+        updateCountdown();
     </script>
 </body>
 </html>
