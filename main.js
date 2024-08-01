@@ -15,6 +15,7 @@
             if (distance < 0) {
                 clearInterval(countdownTimer);
                 document.getElementById('countdown').classList.add('hidden');
+                document.getElementById('bubu').classList.add('hidden');
                 document.getElementById('congratsMessage').classList.remove('hidden');
                 startConfetti();
             }
